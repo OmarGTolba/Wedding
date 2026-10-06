@@ -251,10 +251,10 @@
   .cap1{font-size:1.18em}
   @keyframes charIn{to{opacity:1;transform:none;filter:none}}
   @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-  .hero-sub{font-size:clamp(1.05rem,2.5vw,1.4rem);font-style:italic;color:var(--ink-soft);opacity:0;animation:fadeUp 1.1s ease forwards 1.8s}
-  .hero-date{display:flex;align-items:center;justify-content:center;gap:clamp(.8rem,3vw,1.6rem);margin-top:2rem;opacity:0;animation:fadeUp 1.1s ease forwards 2.1s;font-family:var(--sans);letter-spacing:.25em;font-size:clamp(.7rem,1.8vw,.85rem);text-transform:uppercase;color:var(--ink)}
+  .hero-sub{font-size:clamp(1.05rem,2.5vw,1.4rem);font-style:italic;color:var(--ink-soft);opacity:0;animation:fadeUp .9s ease forwards 1s}
+  .hero-date{display:flex;align-items:center;justify-content:center;gap:clamp(.8rem,3vw,1.6rem);margin-top:2rem;opacity:0;animation:fadeUp .9s ease forwards 1.3s;font-family:var(--sans);letter-spacing:.25em;font-size:clamp(.7rem,1.8vw,.85rem);text-transform:uppercase;color:var(--ink)}
   .hero-date .big{font-family:var(--serif);font-size:clamp(2.6rem,7vw,4rem);letter-spacing:0;color:var(--gold);line-height:1;padding:0 clamp(.8rem,3vw,1.6rem);border-left:1px solid var(--gold);border-right:1px solid var(--gold)}
-  .scroll-cue{position:absolute;bottom:2.4rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.6rem;font-family:var(--sans);font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);opacity:0;animation:fadeUp 1.1s ease forwards 2.5s;z-index:2}
+  .scroll-cue{position:absolute;bottom:2.4rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.6rem;font-family:var(--sans);font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);opacity:0;animation:fadeUp .9s ease forwards 1.6s;z-index:2}
   .scroll-cue span{width:1px;height:50px;background:linear-gradient(var(--gold),transparent);position:relative;overflow:hidden}
   .scroll-cue span::after{content:"";position:absolute;left:0;top:-50%;width:1px;height:50%;background:var(--paper);animation:drip 2s ease-in-out infinite}
   @keyframes drip{to{top:110%}}
@@ -328,19 +328,16 @@
 
   /* ---------- story ---------- */
   .story{background:var(--paper)}
-  /* the whole story on one screen: two photographs laid side by side, no chapters */
-  .story-pair{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,4vw,2.6rem);align-items:start;
-    max-width:600px;margin:clamp(1.4rem,4svh,2.4rem) auto 0}
-  .story-pair .polaroid{padding:10px 10px 40px;cursor:zoom-in}
-  .story-pair .polaroid .cap{font-size:1.2rem;bottom:8px}
-  .story-pair .photo{aspect-ratio:1}
-  .story-pair > div:first-child .polaroid{transform:rotate(-3deg)}
-  .story-pair > div:last-child .polaroid{transform:rotate(3deg) translateY(10px)}
-  .story-pair .polaroid:hover{transform:rotate(0) translateY(-6px);box-shadow:0 30px 60px rgba(58,46,42,.2)}
-  .story-end{font-family:var(--script);font-size:clamp(1.5rem,5vw,2.3rem);color:var(--gold);
-    margin-top:clamp(1.1rem,3.5svh,1.9rem);line-height:1.2}
-
   .story.alt{background:var(--ivory)}
+  .chapter{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,5rem);align-items:center}
+  .chapter.flip .chapter-media{order:2}
+  .chapter-media{position:relative;width:min(100%,calc((100svh - 14rem) * .8));justify-self:center}
+  .chapter-media .polaroid{transform:rotate(-3deg)}
+  .chapter.flip .chapter-media .polaroid{transform:rotate(3deg)}
+  .chapter h3{font-family:var(--script);font-weight:400;font-size:clamp(2.4rem,5vw,3.4rem);margin:.4rem 0 .2rem;color:var(--ink)}
+  .chapter .when{font-family:var(--sans);font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem}
+  .chapter p{font-size:1.2rem;line-height:1.8;color:var(--ink-soft)}
+
   .polaroid{background:#fff;padding:14px 14px 56px;box-shadow:0 20px 50px rgba(58,46,42,.15),0 2px 6px rgba(58,46,42,.08);position:relative;transition:transform .7s cubic-bezier(.2,.7,.2,1),box-shadow .7s}
   .polaroid:hover{transform:rotate(0) scale(1.03)!important;box-shadow:0 30px 70px rgba(58,46,42,.22)}
   .polaroid .cap{position:absolute;left:0;right:0;bottom:14px;text-align:center;font-family:var(--script);font-size:1.5rem;color:var(--ink-soft)}
@@ -486,7 +483,14 @@
   @media (max-width:860px){
     .polaroid{padding:10px 10px 44px}
     .polaroid .cap{font-size:1.2rem;bottom:10px}
+    .chapter{grid-template-columns:1fr;gap:1.8rem;text-align:center}
+    .chapter.flip .chapter-media{order:0}
+    .chapter-media{width:min(300px,72vw,calc(34svh - 2rem))}
+    .chapter .photo{aspect-ratio:1}
+    .chapter .when{margin-bottom:.6rem}
+    .chapter p{font-size:1.08rem;line-height:1.65}
     .venue-cards{grid-template-columns:1fr;gap:1rem;margin-top:1.8rem}
+
     .vcard{padding:1.4rem 1.2rem}
     .vcard .icon{display:none}
     .vcard h3{font-size:2rem}
@@ -551,10 +555,6 @@
     .finale .names-small{font-size:clamp(2.2rem,7svh,3.6rem);margin-top:.6rem}
     .tap-love{margin-top:.9rem}
     .gallery-grid{margin-top:1.4rem}
-    .story-pair{margin-top:1.1rem;gap:.8rem}
-    .story-pair .polaroid{padding:6px 6px 30px}
-    .story-pair .polaroid .cap{font-size:1rem;bottom:5px}
-    .story-end{margin-top:.9rem}
   }
   @media (max-height:780px) and (max-width:860px){
     .timeline .line{left:21px}
@@ -562,7 +562,12 @@
     .t-item .t-time,.t-item:nth-child(odd) .t-time{font-size:1.1rem}
     .t-item .t-text h4{font-size:1.4rem}
     .t-item .t-text p{font-size:.95rem}
+    .chapter{gap:1rem}
+    .chapter-media{width:min(260px,64vw,calc(30svh - 1rem))}
+    .chapter h3{font-size:2.1rem;margin:.1rem 0}
+    .chapter p{font-size:1rem;line-height:1.55}
     .dcard p{font-size:.95rem}
+
     .swatches{margin-top:.4rem}
     .swatches span{width:22px;height:22px}
     .finale .lead{display:none}
@@ -703,15 +708,32 @@
 
 <!-- ================= OUR STORY ================= -->
 <section class="section story" id="story">
-  <div class="container center">
-    <p class="eyebrow reveal">The two of us</p>
-    <h2 class="title reveal d1">Our Story</h2>
-    <p class="lead reveal d2">A hello neither of us saw coming, a question with the easiest answer in the world, and a thousand ordinary days in between that turned out to be the whole point.</p>
-    <div class="story-pair">
-      <div class="reveal d3"><div class="polaroid" data-lightbox><span class="tape"></span><div class="photo" data-src="chapter1.jpeg" data-label="The question"></div><span class="cap">she said yes</span></div></div>
-      <div class="reveal d4"><div class="polaroid" data-lightbox><span class="tape"></span><div class="photo" data-src="chapter2.jpeg" data-label="Forever begins"></div><span class="cap">forever starts now</span></div></div>
-    </div>
-    <p class="story-end reveal d5">and on <span data-cfg="dateLong"></span> — forever begins</p>
+  <div class="container">
+    <article class="chapter">
+      <div class="chapter-media reveal from-left">
+        <div class="polaroid"><span class="tape"></span><div class="photo" data-src="chapter1.jpeg" data-label="The question"></div><span class="cap">she said yes</span></div>
+      </div>
+      <div class="chapter-text reveal from-right d2">
+        <h3>The Question</h3>
+        <p class="when">A heartbeat in time</p>
+        <p>One knee, one ring, one trembling question — and the easiest answer ever given. In that moment, every road we had walked finally made sense.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section story alt">
+  <div class="container">
+    <article class="chapter flip">
+      <div class="chapter-media reveal from-right">
+        <div class="polaroid"><span class="tape"></span><div class="photo" data-src="chapter2.jpeg" data-label="Forever begins"></div><span class="cap">forever starts now</span></div>
+      </div>
+      <div class="chapter-text reveal from-left d2">
+        <h3>Forever Begins</h3>
+        <p class="when" data-cfg="dateLong"></p>
+        <p>And now, the page we have been waiting to write. Surrounded by the people we love most, we will promise each other always — and we want you there.</p>
+      </div>
+    </article>
   </div>
 </section>
 
