@@ -142,7 +142,7 @@
     transition:transform .5s cubic-bezier(.5,0,.75,.4) .08s,opacity .35s .3s}
   .seal .half.l{clip-path:polygon(0 0,53% 0,45% 22%,57% 45%,44% 68%,53% 100%,0 100%)}
   .seal .half.r{clip-path:polygon(53% 0,100% 0,100% 100%,53% 100%,44% 68%,57% 45%,45% 22%)}
-  .seal b{position:relative;z-index:2;display:grid;place-items:center;height:100%;color:#f3d9b8;font-family:var(--script);font-weight:400;font-size:clamp(1.3rem,4vw,1.7rem);transition:opacity .14s .05s}
+  .seal b{position:relative;z-index:2;display:grid;place-items:center;height:100%;color:#f3d9b8;font-family:var(--script);font-weight:400;font-size:clamp(1rem,3.1vw,1.32rem);line-height:1;transition:opacity .14s .05s}
   .envelope.open .seal{animation:sealPress .24s ease}
   @keyframes sealPress{50%{transform:translate(-50%,-50%) scale(1.18)}}
   .envelope.open .seal b{opacity:0}
@@ -200,7 +200,7 @@
   .l-date{font-family:var(--serif);font-size:7cqw;letter-spacing:.12em;color:var(--gold);font-weight:300}
   .l-orn{width:30%;height:auto;color:var(--gold);margin:.5em auto}
   .face.outer .l-script{font-size:9cqw}
-  .seal-mini{width:13cqw;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-family:var(--script);font-size:5cqw;color:#f3d9b8;
+  .seal-mini{width:13cqw;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-family:var(--script);font-size:4cqw;color:#f3d9b8;
     background:radial-gradient(circle at 35% 30%,#b24a46,#7c2a2a 60%,#5a1b1b);opacity:.85}
   /* letter text gently appears once open */
   .face.inner > *:not(.frame-line),.face.mid > *:not(.frame-line){opacity:0;transform:translateY(8px);transition:opacity 1s,transform 1s}
@@ -302,7 +302,7 @@
   .scene-dots i{width:6px;height:6px;border-radius:50%;background:rgba(217,191,140,.25);transition:background .4s,transform .4s}
   .scene-dots i.on{background:var(--gold-light);transform:scale(1.6)}
   .scene .after{position:absolute;bottom:14%;left:0;right:0;text-align:center;opacity:0;transform:translateY(20px);transition:opacity 1.2s,transform 1.2s;z-index:2}
-  .scene .after.show{opacity:1;transform:none;transition-delay:var(--d,.25s)}  /* it has a scroll stop of its own now, so it comes in right away */
+  .scene .after.show{opacity:1;transform:none;transition-delay:var(--d,1.15s)}  /* shares the last line's screen, so it waits for those words to land */
   .scene .after .eyebrow{color:var(--gold-light)}
   .scene .ring-deco{position:absolute;width:min(80vw,620px);aspect-ratio:1;border-radius:50%;border:1px solid rgba(217,191,140,.12);pointer-events:none;
     transform:scale(var(--rs,.75)) rotate(var(--rr,0deg));transition:transform 1.8s cubic-bezier(.3,.7,.2,1)}
@@ -437,6 +437,13 @@
   .timeline .line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(184,146,90,.2);transform:translateX(-50%)}
   .timeline .line i{position:absolute;inset:0;background:linear-gradient(var(--gold-light),var(--gold),var(--rose));transform-origin:top;transform:scaleY(0);transition:transform 3.6s cubic-bezier(.4,0,.2,1) .3s}
   .schedule.in .line i{transform:scaleY(1)}
+  /* the line is absolutely positioned and the times and titles beside it are
+     not, and a positioned element paints above a static one — so the line was
+     drawing over the text. On desktop it hides in the empty centre gutter; on
+     a phone it moves in among the words. Put the items above it explicitly. */
+  .timeline .line{z-index:0}
+  .t-item{z-index:1}
+  .t-item .t-time,.t-item .t-text{position:relative;z-index:1}
   .t-item{display:grid;grid-template-columns:1fr 70px 1fr;align-items:center;margin-bottom:clamp(.8rem,2.6svh,2rem);position:relative}
   .t-item:last-child{margin-bottom:0}
   .t-item .t-time{text-align:right;font-family:var(--serif);font-size:clamp(1.6rem,3.4vw,2.2rem);color:var(--gold);font-weight:300}
@@ -472,6 +479,112 @@
   .finale .sig{font-family:var(--sans);font-size:.65rem;letter-spacing:.4em;text-transform:uppercase;color:#a99583;margin-top:1rem}
   .tap-love{margin-top:1.6rem;font-family:var(--sans);font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);opacity:.7}
   footer{position:absolute;left:0;right:0;bottom:0;color:#8f7d70;text-align:center;padding:1.2rem 1rem;z-index:2;font-family:var(--sans);font-size:.62rem;letter-spacing:.3em;text-transform:uppercase}
+
+  /* ---------- rsvp ---------- */
+  .rsvp{background:linear-gradient(180deg,var(--ivory),var(--paper))}
+  .rsvp-form{max-width:680px;margin:1.8rem auto 0;display:grid;gap:1.05rem}
+  .rsvp-row{display:grid;grid-template-columns:1fr 1fr;gap:1.05rem}
+  .field{display:flex;flex-direction:column;gap:.45rem;text-align:left}
+  .field > label{font-family:var(--sans);font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+  .field .opt{text-transform:none;letter-spacing:0;color:var(--ink-soft);opacity:.7}
+  .field input[type=text],.field input[type=tel],.field select,.field textarea{
+    font-family:var(--serif);font-size:1.05rem;color:var(--ink);background:var(--paper);
+    border:1px solid rgba(184,146,90,.4);border-radius:0;padding:.78rem .9rem;width:100%;
+    transition:border-color .3s,box-shadow .3s;
+  }
+  .field textarea{resize:vertical;min-height:76px}
+  .field input:focus,.field select:focus,.field textarea:focus{
+    outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,146,90,.14)
+  }
+  .field .err{font-family:var(--sans);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--wine)}
+  .field.invalid input,.field.invalid select{border-color:var(--wine)}
+
+  /* joyfully yes / sadly cannot */
+  .pills{display:flex;gap:.75rem;flex-wrap:wrap}
+  .pill{flex:1 1 150px;position:relative}
+  .pill input{position:absolute;opacity:0;width:0;height:0}
+  .pill span{
+    display:block;text-align:center;cursor:pointer;padding:.85rem .8rem;
+    font-family:var(--sans);font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;
+    color:var(--ink-soft);border:1px solid rgba(184,146,90,.4);background:var(--paper);transition:.3s
+  }
+  .pill span:hover{border-color:var(--gold);color:var(--ink)}
+  .pill input:checked + span{background:var(--gold);border-color:var(--gold);color:#fff}
+  .pill input:focus-visible + span{box-shadow:0 0 0 3px rgba(184,146,90,.3)}
+
+  /* only unfolds if they're coming */
+  #ifYes{display:grid;gap:1.05rem;overflow:hidden;max-height:0;opacity:0;transition:max-height .5s ease,opacity .4s ease}
+  #ifYes.show{max-height:440px;opacity:1}
+
+  .checks{display:flex;gap:1.1rem;flex-wrap:wrap;padding-top:.35rem}
+  .checks label{display:inline-flex;align-items:center;gap:.45rem;font-family:var(--serif);font-size:1.02rem;color:var(--ink-soft);cursor:pointer}
+  .checks input{accent-color:var(--gold);width:16px;height:16px}
+
+  .rsvp-actions{text-align:center}
+  #rsvpMsg{font-family:var(--serif);font-size:1rem;margin-top:.8rem;min-height:1.2em;color:var(--ink-soft)}
+  #rsvpMsg.bad{color:var(--wine)}
+  .btn[disabled]{opacity:.5;pointer-events:none}
+  .btn.link{border:0;padding:.5rem;letter-spacing:.2em;color:var(--gold)}
+  .btn.link::before{display:none}
+  .btn.link:hover{color:var(--ink)}
+
+  /* thank-you card */
+  .rsvp-done{max-width:560px;margin:1.8rem auto 0;text-align:center;padding:2.4rem 1.6rem;border:1px solid rgba(184,146,90,.45);background:var(--paper)}
+  .rsvp-done .tick{width:54px;height:54px;margin:0 auto 1.1rem;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;color:var(--gold)}
+  .rsvp-done .tick svg{width:24px;height:24px}
+  .rsvp-done h3{font-family:var(--script);font-weight:400;font-size:clamp(2rem,5vw,2.8rem);color:var(--ink);margin:0 0 .5rem}
+  .rsvp-done p{font-size:1.05rem;color:var(--ink-soft);line-height:1.7}
+
+  @media (max-width:700px){
+    .rsvp-row{grid-template-columns:1fr}
+    .rsvp-form{gap:.8rem;margin-top:1.2rem}
+    #ifYes{gap:.8rem}
+    #ifYes.show{max-height:560px}
+    .rsvp-done{padding:1.8rem 1.2rem;margin-top:1.2rem}
+  }
+
+  /* when beside where — both cards cut from the same cloth as the old venue
+     pair: white on ivory, double gold frame, gold icon, outlined button.
+     Equal widths; the calendar simply runs at a smaller type size, being the
+     denser of the two. */
+  .wh-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.6rem;
+           margin:2.6rem auto 0;align-items:stretch;max-width:940px}
+  .wh-grid .vcard{display:flex;flex-direction:column;align-items:center}
+  .wh-grid .vcard .btn{margin-top:auto}
+
+  /* --- the date side, dialled down --- */
+  .wh-grid .calendar{margin:.2rem auto 0;padding:0;border:0;background:transparent;box-shadow:none;width:min(244px,100%)}
+  .wh-grid .cal-head{font-size:1.8rem;margin-bottom:.4rem}
+  .wh-grid .cal-head small{font-size:.56rem;letter-spacing:.3em}
+  .wh-grid .cal-grid{font-size:.68rem;gap:3px}
+  .wh-grid .cal-grid .dow{font-size:.52rem;padding-bottom:.3rem}
+  .wh-grid .vcard .time{margin:1rem 0 .2rem;font-size:.68rem;letter-spacing:.2em}
+
+  /* --- the venue side, given room to breathe --- */
+  .wh-grid .vcard h3{font-size:2.45rem}
+  .venue-times{display:flex;flex-direction:column;gap:.4rem;margin:.9rem 0 .2rem;
+               font-family:var(--sans);font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;
+               color:var(--gold)}
+  .venue-times b{font-weight:600;letter-spacing:.16em;color:var(--gold)}
+  .wh-grid .vcard .addr{margin-top:.95rem;font-size:1.05rem}
+
+  @media (max-width:860px){
+    /* on a phone the pair stops being a pair: each card takes a full screen,
+       so the section runs two screens tall and the scroll gives each its own
+       stop. The first is shorter by the height of the heading above it. */
+    #when{min-height:auto;padding-block:1.2rem}
+    .wh-grid{display:block;margin:1.2rem auto 0;max-width:440px}
+    .wh-grid .vcard{justify-content:center;min-height:calc(var(--vh,1svh) * 100 - 3rem)}
+    .wh-grid .vcard:first-child{min-height:calc(var(--vh,1svh) * 100 - 13.5rem)}
+    .wh-grid .vcard + .vcard{margin-top:1.2rem}
+    .wh-grid .vcard .btn{margin-top:1.5rem}   /* sits with the content, not pinned to the floor */
+    .wh-grid .calendar{width:min(260px,100%)}
+    .wh-grid .vcard h3{font-size:2.1rem}
+    .wh-grid .vcard .icon{display:block}
+  }
+  .venue-times{display:flex;flex-direction:column;gap:.4rem;margin-top:1rem;font-family:var(--sans);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft)}
+  .venue-times b{color:var(--gold);font-weight:500;letter-spacing:.18em}
+  .vcard h3[data-cfg]{margin-bottom:.2rem}
 
   /* floating hearts */
   .heart-pop{position:fixed;pointer-events:none;z-index:95;color:var(--rose);font-size:20px;animation:heartUp 1.8s ease-out forwards}
@@ -716,7 +829,7 @@
       <div class="chapter-text reveal from-right d2">
         <h3>The Question</h3>
         <p class="when">A heartbeat in time</p>
-        <p>One knee, one ring, one trembling question — and the easiest answer ever given. In that moment, every road we had walked finally made sense.</p>
+        <p>One ring, one trembling question — and the easiest answer ever given. In that moment, every road we had walked finally made sense.</p>
       </div>
     </article>
   </div>
@@ -782,23 +895,6 @@
 
 <div id="lightbox" aria-hidden="true"><div class="lb-inner"></div></div>
 
-<!-- ================= EMOTIONAL SCENE 3 ================= -->
-<section class="scene" data-scene>
-  <div class="sticky">
-    <div class="stars"></div>
-    <div class="ring-deco"></div><div class="ring-deco r2"></div>
-    <span class="bg-word" aria-hidden="true">forever</span>
-    <div class="phrases">
-      <p class="phrase">After all the waiting…</p>
-      <p class="phrase">all the dreaming…</p>
-      <p class="phrase">all the nights we counted down…</p>
-      <p class="phrase">the time has <em>finally</em> come.</p>
-    </div>
-    <div class="scene-dots" aria-hidden="true"></div>
-    <div class="after"><p class="eyebrow">and we are counting every second</p></div>
-  </div>
-</section>
-
 <!-- ================= COUNTDOWN ================= -->
 <section class="section countdown" id="countdown">
   <div class="stars"></div>
@@ -817,45 +913,37 @@
 </section>
 
 <!-- ================= WHEN ================= -->
-<section class="section venue" id="when">
-  <div class="container center">
-    <p class="eyebrow reveal">Mark your calendar</p>
-    <h2 class="title reveal d1">Save the Date</h2>
-    <div class="calendar reveal zoom d2">
-      <div class="cal-head"><span data-cfg="month"></span><small data-cfg="year"></small></div>
-      <div class="cal-grid" id="calGrid"></div>
-    </div>
-    <p class="when-time reveal d3"><span data-cfg="weekday"></span> · <span data-cfg="ceremonyTime"></span></p>
-    <div class="cal-actions reveal d4">
-      <button class="btn solid" id="addCal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Add to my calendar</button>
-    </div>
-  </div>
-</section>
-
-<!-- ================= WHERE ================= -->
-<section class="section venue alt" id="where">
+<!-- ================= WHEN & WHERE ================= -->
+<section class="section venue alt" id="when">
   <div class="container">
     <div class="center">
-      <p class="eyebrow reveal">Join us</p>
-      <h2 class="title reveal d1">Where</h2>
+      <p class="eyebrow reveal">Mark your calendar</p>
+      <h2 class="title reveal d1">When &amp; Where</h2>
+      <p class="lead reveal d2">Ceremony and reception, both at the same venue.</p>
     </div>
-    <div class="venue-cards">
+    <div class="wh-grid">
+
       <div class="vcard reveal d1">
-        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="18" cy="30" r="10"/><circle cx="30" cy="30" r="10"/><path d="M20 12l4-6 4 6-4 4z"/></svg>
-        <h3>The Ceremony</h3>
-        <p class="time" data-cfg="ceremonyTime"></p>
-        <p class="place" data-cfg="ceremonyPlace"></p>
+        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="7" y="11" width="34" height="30" rx="2"/><path d="M7 20h34M17 6v8M31 6v8"/><circle cx="24" cy="30" r="3.5" fill="currentColor" stroke="none"/></svg>
+        <div class="calendar">
+          <div class="cal-head"><span data-cfg="month"></span><small data-cfg="year"></small></div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+        <p class="time"><span data-cfg="weekday"></span> · <span data-cfg="dateLong"></span></p>
+        <button class="btn" id="addCal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Add to calendar</button>
+      </div>
+
+      <div class="vcard reveal d3">
+        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M8 42V18l16-10 16 10v24"/><path d="M18 42V28h12v14"/><path d="M14 24h4M30 24h4"/></svg>
+        <h3 data-cfg="ceremonyPlace"></h3>
+        <p class="venue-times">
+          <span>Ceremony <b data-cfg="ceremonyTime"></b></span>
+          <span>Reception <b data-cfg="receptionTime"></b></span>
+        </p>
         <p class="addr" data-cfg="ceremonyAddress"></p>
         <a class="btn" target="_blank" rel="noopener" data-map="ceremony"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s7-6.3 7-12a7 7 0 10-14 0c0 5.7 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>Directions</a>
       </div>
-      <div class="vcard reveal d3">
-        <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M14 6h8l-1 12a5 5 0 01-6 0zM26 6h8l-1 12a5 5 0 01-6 0z"/><path d="M18 22v16M30 22v16M13 38h10M25 38h10"/></svg>
-        <h3>The Reception</h3>
-        <p class="time" data-cfg="receptionTime"></p>
-        <p class="place" data-cfg="receptionPlace"></p>
-        <p class="addr" data-cfg="receptionAddress"></p>
-        <a class="btn" target="_blank" rel="noopener" data-map="reception"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s7-6.3 7-12a7 7 0 10-14 0c0 5.7 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>Directions</a>
-      </div>
+
     </div>
   </div>
 </section>
@@ -869,12 +957,12 @@
     </div>
     <div class="timeline" id="timeline">
       <div class="line"><i></i></div>
-      <div class="t-item reveal"><div class="t-time">6:00 PM</div><div class="t-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 21V9l8-6 8 6v12"/><path d="M9 21v-6h6v6"/></svg></div><div class="t-text"><h4>Guests Arrive</h4><p>Welcome drinks &amp; warm hugs</p></div></div>
+      <div class="t-item reveal"><div class="t-time">6:00 PM</div><div class="t-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 21V9l8-6 8 6v12"/><path d="M9 21v-6h6v6"/></svg></div><div class="t-text"><h4>Guests Arrive</h4><p>Welcome drinks &amp; warm smiles</p></div></div>
       <div class="t-item reveal"><div class="t-time">6:30 PM</div><div class="t-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="15" r="5"/><circle cx="15" cy="15" r="5"/></svg></div><div class="t-text"><h4>The Ceremony</h4><p>Two hearts, one promise</p></div></div>
       <div class="t-item reveal"><div class="t-time">7:30 PM</div><div class="t-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="14" rx="2"/><circle cx="12" cy="11" r="3.5"/><path d="M8 4l1-2h6l1 2"/></svg></div><div class="t-text"><h4>Photos &amp; Cocktails</h4><p>Capture the moment with us</p></div></div>
       <div class="t-item reveal"><div class="t-time">8:30 PM</div><div class="t-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3v8a3 3 0 006 0V3M8 11v10M17 3c-2 2-2 6 0 8v10"/></svg></div><div class="t-text"><h4>Dinner</h4><p>Good food, better company</p></div></div>
       <div class="t-item reveal"><div class="t-time">9:30 PM</div><div class="t-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><div class="t-text"><h4>First Dance</h4><p>Then the dance floor is yours</p></div></div>
-      <div class="t-item reveal"><div class="t-time">11:30 PM</div><div class="t-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l1.8 5.4H19l-4.4 3.2 1.7 5.4L12 13.8 7.7 17l1.7-5.4L5 8.4h5.2z"/></svg></div><div class="t-text"><h4>Sparkling Farewell</h4><p>Sending us off into forever</p></div></div>
+      <div class="t-item reveal"><div class="t-time">11:30 PM</div><div class="t-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l1.8 5.4H19l-4.4 3.2 1.7 5.4L12 13.8 7.7 17l1.7-5.4L5 8.4h5.2z"/></svg></div><div class="t-text"><h4>Goodbyes</h4><p>Sending us off into forever</p></div></div>
     </div>
   </div>
 </section>
@@ -896,13 +984,80 @@
       <div class="dcard reveal d2">
         <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="8" y="16" width="32" height="24" rx="2"/><path d="M8 24h32M24 16v24"/><path d="M24 16c-3-6-10-6-10-2s7 2 10 2c3 0 10 2 10-2s-7-4-10 2z"/></svg>
         <h4>Gifts</h4>
-        <p>Your presence is the greatest gift of all. If you wish to honour us further, a contribution to our new home would be lovingly received.</p>
+        <p>Your presence is the only gift we could ask for. Come, laugh with us, and share the day — that is more than enough.</p>
       </div>
       <div class="dcard reveal d3">
         <svg class="icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="24" cy="24" r="16"/><path d="M24 14v10l7 5"/></svg>
         <h4>Kindly Note</h4>
         <p>Please arrive a little early so you don't miss a single moment. We'd love for you to be present with us — unplugged during the ceremony.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RSVP ================= -->
+<section class="section rsvp" id="rsvp">
+  <div class="container">
+    <div class="center">
+      <p class="eyebrow reveal">Kindly reply</p>
+      <h2 class="title reveal d1">Will You Join Us?</h2>
+      <p class="lead reveal d2">It would mean the world to have you with us. Please let us know by <span data-cfg="rsvpByLong"></span>.</p>
+    </div>
+
+    <form id="rsvpForm" class="rsvp-form reveal d2" novalidate>
+      <div class="rsvp-row">
+        <div class="field" data-field="name">
+          <label for="rName">Your name</label>
+          <input id="rName" name="name" type="text" autocomplete="name" placeholder="First and last name">
+          <span class="err" aria-live="polite"></span>
+        </div>
+        <div class="field" data-field="phone">
+          <label for="rPhone">Phone <span class="opt">(optional)</span></label>
+          <input id="rPhone" name="phone" type="tel" autocomplete="tel" placeholder="So we can reach you">
+        </div>
+      </div>
+
+      <div class="field" data-field="attending">
+        <label>Will you be joining us?</label>
+        <div class="pills">
+          <label class="pill"><input type="radio" name="attending" value="yes"><span>Joyfully yes</span></label>
+          <label class="pill"><input type="radio" name="attending" value="no"><span>Sadly cannot</span></label>
+        </div>
+        <span class="err" aria-live="polite"></span>
+      </div>
+
+      <div id="ifYes">
+        <div class="rsvp-row">
+          <div class="field">
+            <label for="rGuests">How many of you?</label>
+            <select id="rGuests" name="guests"></select>
+          </div>
+          <div class="field">
+            <label>Which parts?</label>
+            <div class="checks">
+              <label><input type="checkbox" name="events" value="Ceremony" checked> Ceremony</label>
+              <label><input type="checkbox" name="events" value="Reception" checked> Reception</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="rMsg">A note for us <span class="opt">(optional)</span></label>
+        <textarea id="rMsg" name="message" placeholder="Wishes, a song request, anything we should know"></textarea>
+      </div>
+
+      <div class="rsvp-actions">
+        <button class="btn solid" type="submit" id="rsvpSend">Send my reply</button>
+        <p id="rsvpMsg" aria-live="polite"></p>
+      </div>
+    </form>
+
+    <div class="rsvp-done" id="rsvpDone" hidden>
+      <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
+      <h3 id="doneTitle">Thank you</h3>
+      <p id="doneText"></p>
+      <button class="btn link" type="button" id="rsvpAgain">Change my reply</button>
     </div>
   </div>
 </section>
@@ -929,7 +1084,7 @@
 const CONFIG = {
   groom: "Amr",
   bride: "Fatma",
-  // Wedding start. The "+02:00" is the venue's time-zone offset (Egypt).
+  // Wedding start. The "+02:00" is the venue's time-zone offset (Cairo).
   // Change it if your venue is elsewhere so every guest sees the right countdown.
   date: "2026-12-25T18:00:00+02:00",
   durationHours: 6,                       // used for the calendar event
@@ -941,7 +1096,21 @@ const CONFIG = {
   receptionPlace: "Fleet Club Mahrousa",
   receptionAddress: "Alexandria, Egypt",
   receptionMap: "https://www.google.com/maps/search/Fleet%20Club%20Mahrousa/@31.25417709350586,29.973920822143555,17z?hl=en",
-  music: ""                               // e.g. "music/our-song.mp3" — leave empty to hide the button
+  music: "",                               // e.g. "music/our-song.mp3" — leave empty to hide the button
+
+  /* ---- the envelope's sound ----
+     The opening is synthesized in the browser, so there is no file to add.
+     sound:false opens in silence; openSound plays a clip of your own instead. */
+  sound: true,
+  openSound: "",                          // e.g. "sfx/envelope.mp3"
+
+  /* ---- rsvp ----
+     rsvpEndpoint is where replies are sent — see "Collecting RSVPs" in
+     README.md. Until it is set, replies are handed to WhatsApp instead. */
+  rsvpBy: "2026-12-01",                   // reply-by date, YYYY-MM-DD
+  rsvpEndpoint: "https://script.google.com/macros/s/AKfycbwweZTkVp0yFk9C0aargOCJ2JpFOI_Mz0jRcUTSfgEb9D19qr9TuumA4UR4vmEuxvMW/exec",
+  rsvpWhatsApp: "",                       // digits only, e.g. "201001234567"
+  maxGuests: 6                            // largest party a guest can choose
 };
 
 /* ===================================================================== */
@@ -957,14 +1126,18 @@ const weddingDate = new Date(CONFIG.date);
     .format(new Date(CONFIG.date.slice(0, 10) + "T12:00:00Z"));
   const values = {
     ...CONFIG,
-    initials: CONFIG.groom[0] + CONFIG.bride[0],
+    initials: CONFIG.groom[0] + "&" + CONFIG.bride[0],
     initialsPlain: CONFIG.groom[0] + " & " + CONFIG.bride[0],
     weekday: fmt({ weekday: "long" }),
     day: fmt({ day: "2-digit" }),
     month: fmt({ month: "long" }),
     year: fmt({ year: "numeric" }),
     dateShort: fmt({ day: "2-digit" }) + " · " + fmt({ month: "2-digit" }) + " · " + fmt({ year: "numeric" }),
-    dateLong: fmt({ day: "numeric", month: "long", year: "numeric" })
+    dateLong: fmt({ day: "numeric", month: "long", year: "numeric" }),
+    rsvpByLong: CONFIG.rsvpBy
+      ? new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })
+          .format(new Date(CONFIG.rsvpBy + "T12:00:00Z"))
+      : ""
   };
   const NAMES = { groom: 1, bride: 1 };
   $$("[data-cfg]").forEach(el => {
@@ -981,6 +1154,7 @@ const weddingDate = new Date(CONFIG.date);
 
   ["ceremony", "reception"].forEach(k => {
     const a = $(`[data-map="${k}"]`);
+    if (!a) return;        // one venue now, so only one of these links exists
     a.href = CONFIG[k + "Map"] || "https://www.google.com/maps/search/?api=1&query=" +
       encodeURIComponent(CONFIG[k + "Place"] + ", " + CONFIG[k + "Address"]);
   });
@@ -1025,6 +1199,105 @@ $$(".photo[data-src]").forEach(initPhoto);
    seal cracks → flap opens → letter slides out → envelope falls away
    → letter crinkles & unfolds → it opens into the site            */
 const music = $("#bgMusic"), musicBtn = $("#musicBtn");
+
+/* ---------- envelope sound ----------
+   The opening is scored in the browser with the Web Audio API: the wax seal
+   cracks, the flap lifts, the letter slides out, and a soft chime lands as the
+   site opens. Nothing to download — paper is just filtered noise swept across a
+   band, so there is no audio file to ship or license.
+   CONFIG.openSound plays a clip of your own instead; CONFIG.sound:false is silent.
+   The AudioContext is built inside the tap because browsers refuse to let a page
+   make noise until the visitor has actually touched it.                       */
+const SFX = (() => {
+  let ctx, noiseBuf, out, ready = false;
+  const on = () => CONFIG.sound !== false;
+
+  function boot() {
+    if (ready || !on()) return;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;                      // very old browser: just stay quiet
+    ctx = new AC();
+    out = ctx.createGain();
+    out.gain.value = .5;
+    out.connect(ctx.destination);
+    const n = Math.floor(ctx.sampleRate * 2);
+    noiseBuf = ctx.createBuffer(1, n, ctx.sampleRate);
+    const d = noiseBuf.getChannelData(0);
+    for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+    ready = true;
+  }
+
+  // a band of noise swept f0 -> f1: the sound of paper moving
+  function paper(at, dur, f0, f1, peak, q = 1) {
+    if (!ready) return;
+    const t = ctx.currentTime + at;
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuf; src.loop = true;
+    const bp = ctx.createBiquadFilter();
+    bp.type = "bandpass"; bp.Q.value = q;
+    bp.frequency.setValueAtTime(f0, t);
+    bp.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(.0001, t);
+    g.gain.exponentialRampToValueAtTime(peak, t + dur * .18);
+    g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    src.connect(bp).connect(g).connect(out);
+    src.start(t); src.stop(t + dur + .05);
+  }
+
+  // the seal giving way: a tight crack with a little body underneath it
+  function crack(at) {
+    if (!ready) return;
+    paper(at, .09, 2600, 900, .5, 1.6);
+    const t = ctx.currentTime + at;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = "triangle";
+    o.frequency.setValueAtTime(220, t);
+    o.frequency.exponentialRampToValueAtTime(70, t + .12);
+    g.gain.setValueAtTime(.18, t);
+    g.gain.exponentialRampToValueAtTime(.0001, t + .14);
+    o.connect(g).connect(out);
+    o.start(t); o.stop(t + .16);
+  }
+
+  // two bell partials as the letter becomes the site
+  function chime(at) {
+    if (!ready) return;
+    const t = ctx.currentTime + at;
+    [1318.5, 1975.5].forEach((f, i) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(.0001, t);
+      g.gain.exponentialRampToValueAtTime(i ? .05 : .09, t + .03);
+      g.gain.exponentialRampToValueAtTime(.0001, t + 1.8);
+      o.connect(g).connect(out);
+      o.start(t); o.stop(t + 1.9);
+    });
+  }
+
+  return {
+    // called straight from the tap, which is what unlocks audio
+    open() {
+      if (!on()) return;
+      if (CONFIG.openSound) {                     // your own clip wins
+        const a = new Audio(CONFIG.openSound);
+        a.volume = .85;
+        a.play().catch(() => {});
+        return;
+      }
+      boot();
+      if (ctx && ctx.state === "suspended") ctx.resume();
+      crack(0);                          // the seal cracks
+      paper(.22, .34, 900, 2400, .10);   // the flap lifts
+      if (reduceMotion) return;          // the short opening ends here
+      paper(1.15, .75, 2500, 700, .16);  // the letter slides out
+      paper(2.15, .50, 1200, 2600, .10); // it unfolds
+      paper(3.35, .40, 2200, 900, .08);  // and flattens
+    },
+    finish() { if (on() && !CONFIG.openSound) chime(0); }
+  };
+})();
+
 const opener = $("#opener"), env = $("#envelope"), letter = $("#letter");
 const openerTimers = [];
 let finished = false;
@@ -1033,6 +1306,7 @@ function openEnvelope() {
   if (env.classList.contains("open")) return;
   env.classList.add("open");
   opener.classList.add("started");
+  SFX.open();
   if (CONFIG.music) {
     music.src = CONFIG.music;
     musicBtn.classList.add("show");
@@ -1052,6 +1326,7 @@ function finishOpening() {
   opener.classList.add("gone");
   document.body.classList.remove("locked");
   window.scrollTo(0, 0);
+  SFX.finish();
   buildStops();
   setTimeout(() => burstHearts(innerWidth / 2, innerHeight / 2, 18), 300);
 }
@@ -1127,7 +1402,7 @@ const scenes = $$("[data-scene]").map(sec => {
     return { el: p, words };
   });
   // one full screen of scroll per line, plus one more for the closing line
-  sec.style.setProperty("--len", phrases.length + 1);
+  sec.style.setProperty("--len", phrases.length);
   const dotBox = $(".scene-dots", sec);
   phrases.forEach(() => dotBox.appendChild(document.createElement("i")));
   return { sec, phrases, dots: $$("i", dotBox), after: $(".after", sec), rings: $$(".ring-deco", sec), bg: $(".bg-word", sec), active: -2 };
@@ -1152,13 +1427,13 @@ function updateScenes(y) {
   const vh = VH;
   scenes.forEach(sc => {
     const top = sc.sec.offsetTop - y;
-    // one stop per line, then one last stop that holds the final line and brings in
-    // the closing words — so leaving the scene is always a separate scroll of its own
-    const n = sc.phrases.length, steps = n + 1, unit = sc.sec.offsetHeight / steps;
+    // one stop per line, no more. The closing words arrive on the last line
+    // screen itself rather than costing a whole scroll of their own.
+    const n = sc.phrases.length, steps = n, unit = sc.sec.offsetHeight / steps;
     const k = top > vh * 0.45 ? -1 : Math.min(steps - 1, Math.max(0, Math.round(-top / unit)));
     if (k === sc.active) return;
     sc.active = k;
-    const cur = k < 0 ? -1 : Math.min(k, n - 1);        // the final line stays up for the closing stop
+    const cur = k < 0 ? -1 : Math.min(k, n - 1);
     sc.phrases.forEach((ph, i) => {
       ph.el.classList.toggle("active", i === cur);
       ph.el.classList.toggle("past", i < cur);
@@ -1180,7 +1455,8 @@ function updateScenes(y) {
 const STEP_MS = reduceMotion ? 250 : 900;
 let stops = [], stepTarget = null, lastWheel = 0, touchY = null, touchDone = false, idleTimer;
 let glideId = 0, glideEnd = 0;
-const isBlocked = () => document.body.classList.contains("locked") || $("#lightbox").classList.contains("show");
+const isBlocked = () => document.body.classList.contains("locked") || $("#lightbox").classList.contains("show")
+  || /input|textarea|select/i.test((document.activeElement || {}).tagName || "");   // typing beats snapping
 /* no step may be shorter than this slice of a screen — a 2% nudge reads as a broken
    swipe, and then the next one has to cover the rest of the section in one leap */
 const MIN_GAP = 0.34;
@@ -1191,7 +1467,7 @@ function buildStops() {
   $$("header.hero, section").forEach(el => {
     const top = el.offsetTop, h = el.offsetHeight;
     if (el.matches("[data-scene]")) {
-      const steps = $$(".phrase", el).length + 1;   // + the closing stop
+      const steps = $$(".phrase", el).length;
       for (let k = 0; k < steps; k++) list.push({ y: top + (h / steps) * k, hard: true });
     } else {
       list.push({ y: top, hard: true });
@@ -1409,6 +1685,146 @@ function burstHearts(x, y, count = 10) {
   }
 }
 $("#finale").addEventListener("click", e => burstHearts(e.clientX, e.clientY, 12));
+
+/* ---------- rsvp ----------
+   There is no server of our own. The reply is POSTed as JSON to
+   CONFIG.rsvpEndpoint — a Google Apps Script web app that appends a row to a
+   Google Sheet (setup steps and the script itself are in README.md).
+   Apps Script answers from a redirect that carries no CORS headers, so when the
+   browser refuses to let us read the response we send it a second time as an
+   opaque no-cors request: the row still lands, we just cannot read the reply.
+   With no endpoint configured at all we hand the reply to WhatsApp, so a guest
+   is never left tapping a button that quietly does nothing.                 */
+const rsvpForm = $("#rsvpForm"), rsvpDone = $("#rsvpDone"), rsvpMsg = $("#rsvpMsg");
+const ifYes = $("#ifYes"), rsvpSend = $("#rsvpSend"), guestSel = $("#rGuests");
+const RSVP_KEY = "rsvp:" + CONFIG.groom + CONFIG.bride;
+
+for (let i = 1; i <= (CONFIG.maxGuests || 6); i++) {
+  const o = document.createElement("option");
+  o.value = i;
+  o.textContent = i === 1 ? "Just me" : i + " of us";
+  guestSel.append(o);
+}
+
+const attendingNow = () => (rsvpForm.querySelector("input[name=attending]:checked") || {}).value;
+
+function setErr(field, text) {
+  const f = rsvpForm.querySelector('[data-field="' + field + '"]');
+  if (!f) return;
+  f.classList.toggle("invalid", !!text);
+  const s = $(".err", f);
+  if (s) s.textContent = text || "";
+}
+
+function syncYes() { ifYes.classList.toggle("show", attendingNow() === "yes"); }
+
+$$("input[name=attending]").forEach(r => r.addEventListener("change", () => {
+  syncYes();
+  setErr("attending", "");
+  setTimeout(buildStops, 560);   // the section just changed height
+}));
+
+function showDone(data) {
+  rsvpForm.hidden = true;
+  rsvpDone.hidden = false;
+  const first = String(data.name || "").trim().split(/\s+/)[0];
+  const coming = data.attending === "yes";
+  $("#doneTitle").textContent = coming ? "See you there" : "Thank you";
+  $("#doneText").textContent = coming
+    ? first + ", your reply is in — " + data.guests + (data.guests == 1 ? " seat" : " seats") +
+      " saved. We cannot wait to celebrate with you."
+    : first + ", thank you for letting us know. You will be missed, and you will be in our hearts on the day.";
+  setTimeout(buildStops, 60);
+}
+
+function rsvpSaved(data) {
+  rsvpSend.disabled = false;
+  rsvpMsg.textContent = "";
+  rsvpMsg.classList.remove("bad");
+  try { localStorage.setItem(RSVP_KEY, JSON.stringify(data)); } catch (e) {}
+  showDone(data);
+  burstHearts(innerWidth / 2, innerHeight * .55, 14);
+}
+
+// no endpoint configured yet — send it through WhatsApp rather than lose it
+function rsvpFallback(data) {
+  const txt = "RSVP — " + data.name + "\n" +
+    (data.attending === "yes" ? "Attending: yes (" + data.guests + ")" : "Attending: no") +
+    (data.events ? "\nFor: " + data.events : "") +
+    (data.phone ? "\nPhone: " + data.phone : "") +
+    (data.message ? "\nNote: " + data.message : "");
+  if (CONFIG.rsvpWhatsApp) {
+    window.open("https://wa.me/" + CONFIG.rsvpWhatsApp + "?text=" + encodeURIComponent(txt), "_blank");
+    try { localStorage.setItem(RSVP_KEY, JSON.stringify(data)); } catch (e) {}
+    showDone(data);
+    return;
+  }
+  rsvpMsg.classList.add("bad");
+  // a guest must never read our configuration notes; keep those for local editing
+  rsvpMsg.textContent = /^(localhost|127.0.0.1|[?::1]?)$/.test(location.hostname)
+    ? "Not connected yet — set CONFIG.rsvpEndpoint or CONFIG.rsvpWhatsApp (see README)."
+    : "We can't take replies just yet — please try again a little later.";
+}
+
+rsvpForm.addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = $("#rName").value.trim();
+  const attending = attendingNow();
+  let bad = false;
+  if (name.length < 2) { setErr("name", "Please tell us your name"); bad = true; } else setErr("name", "");
+  if (!attending) { setErr("attending", "Please choose one"); bad = true; } else setErr("attending", "");
+  if (bad) return;
+
+  const data = {
+    name,
+    phone: $("#rPhone").value.trim(),
+    attending,
+    guests: attending === "yes" ? Number(guestSel.value) : 0,
+    events: attending === "yes" ? $$("input[name=events]:checked").map(c => c.value).join(", ") : "",
+    message: $("#rMsg").value.trim(),
+    submittedAt: new Date().toISOString()
+  };
+
+  if (!CONFIG.rsvpEndpoint) return rsvpFallback(data);
+
+  rsvpSend.disabled = true;
+  rsvpMsg.classList.remove("bad");
+  rsvpMsg.textContent = "Sending…";
+  const body = JSON.stringify(data);
+  // text/plain keeps this a "simple" request, so the browser skips the
+  // CORS preflight that Apps Script cannot answer
+  const headers = { "Content-Type": "text/plain;charset=utf-8" };
+  try {
+    const res = await fetch(CONFIG.rsvpEndpoint, { method: "POST", headers, body, redirect: "follow" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    rsvpSaved(data);
+  } catch (err) {
+    try {
+      await fetch(CONFIG.rsvpEndpoint, { method: "POST", mode: "no-cors", headers, body });
+      rsvpSaved(data);   // opaque, but it did leave the browser
+    } catch (e2) {
+      rsvpSend.disabled = false;
+      rsvpMsg.classList.add("bad");
+      rsvpMsg.textContent = "That didn't go through. Please check your connection and try again.";
+    }
+  }
+});
+
+$("#rsvpAgain").addEventListener("click", () => {
+  rsvpDone.hidden = true;
+  rsvpForm.hidden = false;
+  rsvpMsg.textContent = "";
+  rsvpMsg.classList.remove("bad");
+  setTimeout(buildStops, 60);
+});
+
+// someone who already replied sees their answer, not an empty form again
+(function restoreRsvp() {
+  let prev = null;
+  try { prev = JSON.parse(localStorage.getItem(RSVP_KEY) || "null"); } catch (e) {}
+  if (prev && prev.name) showDone(prev); else syncYes();
+})();
+
 
 /* ---------- golden sparkle trail (desktop only) ---------- */
 if (!reduceMotion && matchMedia("(pointer:fine)").matches) {
