@@ -5,3 +5,7 @@ desktop.ini
 
 # wrangler local state (created by `wrangler pages deploy`)
 .wrangler/
+
+# recovered production snapshots (the originals live in Cloudflare deployment
+# history, e.g. https://09865a69.wedding-8ei.pages.dev)
+amr-fatma-LIVE-*.html
