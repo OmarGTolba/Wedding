@@ -341,6 +341,16 @@
   .polaroid{background:#fff;padding:14px 14px 56px;box-shadow:0 20px 50px rgba(58,46,42,.15),0 2px 6px rgba(58,46,42,.08);position:relative;transition:transform .7s cubic-bezier(.2,.7,.2,1),box-shadow .7s}
   .polaroid:hover{transform:rotate(0) scale(1.03)!important;box-shadow:0 30px 70px rgba(58,46,42,.22)}
   .polaroid .cap{position:absolute;left:0;right:0;bottom:14px;text-align:center;font-family:var(--script);font-size:1.5rem;color:var(--ink-soft)}
+  /* Gallery photos are matted instead of captioned: a warm mat, a fine gold
+     hairline set just off the image, and a softer outer edge. The class sits
+     on the element itself so the frame follows the clone into the lightbox. */
+  .polaroid.framed{--mat:clamp(8px,1.1vw,13px);padding:var(--mat);
+    background:linear-gradient(158deg,#fffdf9,#f8f1e6);
+    border:1px solid rgba(184,146,90,.34);
+    box-shadow:0 22px 48px rgba(58,46,42,.16),0 2px 6px rgba(58,46,42,.07)}
+  .polaroid.framed::before{content:"";position:absolute;inset:calc(var(--mat) - 4px);
+    border:1px solid rgba(184,146,90,.5);pointer-events:none;z-index:2}
+  .polaroid.framed:hover{box-shadow:0 30px 64px rgba(58,46,42,.24)}
   .tape{position:absolute;top:-14px;left:50%;width:110px;height:30px;transform:translateX(-50%) rotate(-4deg);background:rgba(233,201,195,.7);box-shadow:0 1px 3px rgba(0,0,0,.08);z-index:2}
 
   /* ---------- quote ---------- */
@@ -354,8 +364,7 @@
   .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2.5vw,2rem);margin:2.4rem auto 0;
     /* width follows screen height so both rows always fit in one screen */
     max-width:min(1000px,max(300px,calc((100svh - 36rem) * 1.5 + 4rem)))}
-  .gallery-grid .polaroid{padding:10px 10px 44px;cursor:zoom-in}
-  .gallery-grid .polaroid .cap{font-size:1.25rem;bottom:8px}
+  .gallery-grid .polaroid{cursor:zoom-in}
   .gallery-grid .polaroid .photo{aspect-ratio:1}
   .gallery-grid > div:nth-child(1) .polaroid{transform:rotate(-4deg)}
   .gallery-grid > div:nth-child(2) .polaroid{transform:rotate(2deg) translateY(12px)}
@@ -368,9 +377,8 @@
   #lightbox.show{opacity:1;visibility:visible}
   #lightbox .lb-inner{width:min(560px,92vw);transform:scale(.85) rotate(-3deg);transition:transform .6s cubic-bezier(.2,.8,.2,1)}
   #lightbox.show .lb-inner{transform:none}
-  #lightbox .polaroid{padding:14px 14px 64px}
+  #lightbox .polaroid.framed{--mat:14px}
   #lightbox .photo{aspect-ratio:1}
-  #lightbox .cap{font-size:1.9rem}
 
   /* ---------- countdown ---------- */
   .countdown{background:var(--deep);color:#f6ede2;overflow:hidden;text-align:center}
@@ -629,8 +637,7 @@
     .lead{font-size:1.05rem}
     .gallery .lead{display:none}
     .gallery-grid{gap:.7rem;margin-top:1.8rem}
-    .gallery-grid .polaroid{padding:5px 5px 28px}
-    .gallery-grid .polaroid .cap{font-size:.95rem;bottom:5px}
+    .gallery-grid .polaroid.framed{--mat:5px}
     .gallery-grid .photo .ph svg{width:24px;height:24px}
     .gallery-grid .photo .ph small{display:none}
     .gallery-grid .photo .ph b{font-size:.8rem}
@@ -938,12 +945,12 @@
       <p class="lead reveal d2">كلُّ صورةٍ تحمل نبضة — ضحكةٌ لا نريد أن ننساها، ولحظةٌ نتمنى أن تدوم للأبد.</p>
     </div>
     <div class="gallery-grid">
-      <div class="reveal d1"><div class="polaroid" data-lightbox><div class="photo" data-src="../gallery1.jpeg" data-label="ذكرى أولى"></div><span class="cap">أول رحلةٍ لنا</span></div></div>
-      <div class="reveal d2"><div class="polaroid" data-lightbox><div class="photo" data-src="../gallery2.jpeg" data-label="ذكرى ثانية"></div><span class="cap">أحاديث الغروب</span></div></div>
-      <div class="reveal d3"><div class="polaroid" data-lightbox><div class="photo" data-src="../gallery3.jpeg" data-label="ذكرى ثالثة"></div><span class="cap">عبثنا الجميل</span></div></div>
-      <div class="reveal d1"><div class="polaroid" data-lightbox><div class="photo" data-src="../gallery4.jpeg" data-label="ذكرى رابعة"></div><span class="cap">ذلك اليوم المُمطر</span></div></div>
-      <div class="reveal d2"><div class="polaroid" data-lightbox><div class="photo" data-src="../gallery5.jpeg" data-label="ذكرى خامسة"></div><span class="cap">الخاتم</span></div></div>
-      <div class="reveal d3"><div class="polaroid" data-lightbox><div class="photo" data-src="../gallery6.jpeg" data-label="ذكرى سادسة"></div><span class="cap">ما هي إلا البداية</span></div></div>
+      <div class="reveal d1"><div class="polaroid framed" data-lightbox><div class="photo" data-src="../gallery1.jpeg" data-label="ذكرى أولى"></div></div></div>
+      <div class="reveal d2"><div class="polaroid framed" data-lightbox><div class="photo" data-src="../gallery2.jpeg" data-label="ذكرى ثانية"></div></div></div>
+      <div class="reveal d3"><div class="polaroid framed" data-lightbox><div class="photo" data-src="../gallery3.jpeg" data-label="ذكرى ثالثة"></div></div></div>
+      <div class="reveal d1"><div class="polaroid framed" data-lightbox><div class="photo" data-src="../gallery4.jpeg" data-label="ذكرى رابعة"></div></div></div>
+      <div class="reveal d2"><div class="polaroid framed" data-lightbox><div class="photo" data-src="../gallery5.jpeg" data-label="ذكرى خامسة"></div></div></div>
+      <div class="reveal d3"><div class="polaroid framed" data-lightbox><div class="photo" data-src="../gallery6.jpeg" data-label="ذكرى سادسة"></div></div></div>
     </div>
   </div>
 </section>
@@ -1005,6 +1012,7 @@
 
 
 <!-- ================= DRESS CODE & NOTES ================= -->
+<!-- "Good to Know" hidden on request. To restore, delete this line and the closing comment marker just after the section.
 <section class="section dress" id="details">
   <div class="container">
     <div class="center">
@@ -1031,6 +1039,7 @@
     </div>
   </div>
 </section>
+-->
 
 <!-- ================= RSVP ================= -->
 <section class="section rsvp" id="rsvp">
